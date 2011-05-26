@@ -80,7 +80,7 @@ object FaceComUtil{
 
     //save to DB
     val i = UserPhoto.createInstance
-    i.user(user)
+    i.user(user.id.is)
     i.imageName(imageFile)
     i.save
 
@@ -135,7 +135,7 @@ object FaceComUtil{
 
   def recognize(user : User, image : Array[Byte]) : UserPhoto = {
 
-    val ids = user.uidWithNameSpace :: user.friends.all.map(_.uidWithNameSpace)
+    val ids = User.findAll.map(_.uidWithNameSpace)
 
     val (f,userPhoto) = save(user,image)
     val photo : Photo = client.recognize(f, ids.mkString(","))
