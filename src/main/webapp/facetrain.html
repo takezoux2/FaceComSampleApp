@@ -1,0 +1,36 @@
+<div class="lift:surround?with=default;at=content">
+  <h2>Photo</h2>
+
+    <div>
+      <lift:PhotoTraining.img>  </lift:PhotoTraining.img>
+
+    </div>
+        <div id="status"></div>
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+               <td>場所</td>
+               <td>検出</td>
+               <td>修正</td>
+            </tr>
+            </thead>
+            <tbody id="faces">
+            <lift:PhotoTraining.faces>
+            <tr>
+                <td><e:pos></e:pos></td>
+                <td><e:detected></e:detected></td>
+                <td><e:train form="POST">
+                    <form action="#" method="POST">
+                   <f:select /> <f:train></f:train>
+                    </form>
+                </e:train></td>
+            </tr>
+            </lift:PhotoTraining.faces>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
