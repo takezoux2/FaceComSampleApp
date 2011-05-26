@@ -26,6 +26,8 @@ object FaceComUtil{
 
   val dir = "data/photos"
 
+  val syncObj = new Object
+
   def readImage(image : String) : Array[Byte] = {
     val f = new File(dir,image)
     val input = new FileInputStream(f)
@@ -39,7 +41,8 @@ object FaceComUtil{
 
     val (f,userPhoto) = save(user,image)
 
-    val p = client.detect(f)
+
+    val p = syncObj.synchronized( client.detect(f) )
 
     val faces = p.getFaces().asScala.toList
 
@@ -138,7 +141,7 @@ object FaceComUtil{
     val ids = User.findAll.map(_.uidWithNameSpace)
 
     val (f,userPhoto) = save(user,image)
-    val photo : Photo = client.recognize(f, ids.mkString(","))
+    val photo : Photo = syncObj.synchronized( client.recognize(f, ids.mkString(",")) )
 
     val faces = photo.getFaces.asScala.toList
 
@@ -150,8 +153,11 @@ object FaceComUtil{
 
     logger.info("Train User:%s target:%s@%s".format(user.id.is,detection.id.is,detection.userPhoto.is))
 
+    syncObj.synchronized( {
     client.saveTags(detection.tagId,user.uidWithNameSpace,user.niceName)
     client.train(user.uidWithNameSpace)
+    }
+    )
 
     detection.user(user.id.is)
     detection.save

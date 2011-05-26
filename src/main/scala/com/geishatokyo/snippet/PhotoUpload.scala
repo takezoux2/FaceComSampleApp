@@ -40,7 +40,9 @@ class PhotoUpload extends StatefulSnippet {
   }
 
 
-  def isImage(filename : String) = {
+  def isImage(_filename : String) = {
+    val filename = _filename.toLowerCase
+
     filename.endsWith(".jpg") ||
     filename.endsWith(".gif") ||
     filename.endsWith(".jpeg") ||
